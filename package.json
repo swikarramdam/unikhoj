@@ -1,0 +1,9 @@
+{
+  "name": "unikhoj",
+  "private": true,
+  "scripts": {
+    "dev:client": "npm run dev --prefix client",
+    "dev:server": "npm run dev --prefix server",
+    "dev": "npm run dev:server & npm run dev:client"
+  }
+}

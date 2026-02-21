@@ -147,7 +147,10 @@ export default function LeadForm() {
     if (!validateStep(3)) return;
     setServerError("");
     try {
-      const res = await fetch("/api/leads", {
+      const API_URL = import.meta.env.PROD
+        ? "https://unikhoj.onrender.com/api/leads"
+        : "/api/leads";
+      const res = await fetch(API_URL, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data),

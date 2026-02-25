@@ -1,0 +1,40 @@
+name: MERN Stack CI
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  lint-and-test:
+    runs-on: ubuntu-latest
+    
+    # This runs the same steps for BOTH folders at the same time
+    strategy:
+      matrix:
+        directory: [client, server]
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+          # Tells the cache to look for package-lock.json inside the specific folder
+          cache-dependency-path: ./${{ matrix.directory }}/package-lock.json
+
+      - name: Install dependencies
+        run: npm install
+        working-directory: ./${{ matrix.directory }}
+
+      - name: Run Linter
+        run: npm run lint --if-present
+        working-directory: ./${{ matrix.directory }}
+
+      - name: Run Tests
+        run: npm test --if-present
+        working-directory: ./${{ matrix.directory }}
